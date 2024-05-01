@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apprendre Lua pour Roblox</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            padding: 20px;
+        }
+        h1, h2, h3, h4 {
+            padding: 5px;
+        }
+        h1 {
+            color: #ff6347;
+        }
+        h2 {
+            color: #4682b4;
+        }
+        pre {
+            background-color: #e6e6fa;
+            border: 1px solid #ddd;
+            padding: 10px;
+            overflow: auto;
+            white-space: pre-wrap;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Introduction à la Programmation dans Roblox</h1>
+    <div class="section">
+        <h2>Qu'est-ce que Roblox Studio ?</h2>
+        <p>Roblox Studio est l'environnement de développement intégré pour créer des jeux sur la plateforme Roblox. Il permet aux utilisateurs de créer des jeux en utilisant le langage de programmation Lua.</p>
+
+        <h2>Bases de Lua pour Roblox</h2>
+        <p>Lua est un langage de programmation léger utilisé dans Roblox pour scripter les interactions dans les jeux. C'est un langage simple avec une syntaxe facile à apprendre.</p>
+    </div>
+
+    <h1>Concepts de Base de Lua</h1>
+    <div class="section">
+        <h2>Variables et Types de Données</h2>
+        <pre>local nombre = 10
+local nom = "Roblox"
+local estVrai = true</pre>
+
+        <h2>Structures de Contrôle (if, for, while)</h2>
+        <pre>if nombre > 5 then
+    print("Plus grand que 5")
+end
+
+for i = 1, 5 do
+    print("Numéro " .. i)
+end
+
+local j = 5
+while j > 0 do
+    print(j)
+    j = j - 1
+end</pre>
+
+        <h2>Fonctions</h2>
+        <pre>local function saluer(nom)
+    print("Bonjour, " .. nom)
+end
+saluer("Joueur")</pre>
+    </div>
+
+    <h1>Manipulation des Parties</h1>
+    <div class="section">
+        <h2>Déplacer une Partie de A à B</h2>
+        <pre>local part = game.Workspace.Part
+part.Position = Vector3.new(50, 10, 20)</pre>
+
+        <h2>Rotation et Mise à l'échelle des Parties</h2>
+        <pre>part.CFrame = part.CFrame * CFrame.Angles(0, math.rad(90), 0)
+part.Size = Vector3.new(2, 2, 2)</pre>
+    </div>
+
+    <h1>Interactions avec le Joueur</h1>
+    <div class="section">
+        <h2>Détecter les collisions</h2>
+        <pre>part.Touched:Connect(function(hit)
+    print("Touche: " .. hit.Name)
+end)</pre>
+
+        <h2>Réponse aux Entrées du Clavier</h2>
+        <pre>game.Players.LocalPlayer:GetMouse().KeyDown:Connect(function(key)
+    if key == "f" then
+        print("La touche F a été pressée.")
+    end
+end)</pre>
+
+        <h2>Systèmes de Score et Collectibles</h2>
+        <pre>local collectible = game.Workspace.Collectible
+collectible.Touched:Connect(function(hit)
+    local player = game.Players:GetPlayerFromCharacter(hit.Parent)
+    if player then
+        collectible:Destroy()
+        player.leaderstats.Score.Value += 5
+    end
+end)</pre>
+    </div>
+
+    <h1>Concepts Avancés</h1>
+    <div class="section">
+        <h2>Utilisation des Services (TweenService, PathfindingService)</h2>
+        <pre>local tweenService = game:GetService("TweenService")
+local part = game.Workspace.Part
+local goal = {}
+goal.Position = Vector3.new(100, 10, 100)
+local tweenInfo = TweenInfo.new(5)
+local tween = tweenService:Create(part, tweenInfo, goal)
+tween:Play()</pre>
+
+        <h2>Gérer les Événements avec les Connecteurs</h2>
+        <pre>part.Touched:Connect(function(hit)
+    if hit:IsA("Player") then
+        print("Joueur touché")
+    end
+end)</pre>
+
+        <h2>Optimisations et Bonnes Pratiques</h2>
+        <pre>-- Utiliser local autant que possible
+-- Éviter les boucles infinies
+-- Préférer les connexions avec des fonctions nommées pour faciliter le débogage</pre>
+    </div>
+
+    <h1>Exemples de Jeux</h1>
+    <div class="section">
+        <h2>Jeu de Plateforme: Déplacer des Plateformes, Sauter</h2>
+        <pre>local platform = game.Workspace.MovingPlatform
+platform.Touched:Connect(function(hit)
+    local player = game.Players:GetPlayerFromCharacter(hit.Parent)
+    if player then
+        player.Character.Humanoid.JumpPower = 50
+        player.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+    end
+end)</pre>
+
+        <h2>Jeu d'Aventure: Collecter des Objets, Explorer</h2>
+        <pre>local treasure = game.Workspace.Treasure
+treasure.Touched:Connect(function(hit)
+    print("Trésor collecté par: " .. hit.Parent.Name)
+end)</pre>
+
+        <h2>Jeu Multijoueur: Scores, Mort par Toucher</h2>
+        <pre>local lava = game.Workspace.Lava
+lava.Touched:Connect(function(hit)
+    local player = game.Players:GetPlayerFromCharacter(hit.Parent)
+    if player then
+        player.leaderstats.Lives.Value -= 1
+        if player.leaderstats.Lives.Value <= 0 then
+            player:Kick("Vous êtes mort !")
+        end
+    end
+end)</pre>
+    </div>
+
+</body>
+</html>
